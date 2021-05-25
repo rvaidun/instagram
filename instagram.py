@@ -6,6 +6,7 @@ from dotenv import load_dotenv, dotenv_values
 import os
 from datetime import date
 import sys
+import progressbar
 load_dotenv()
 config = dotenv_values(".env")
 
@@ -45,29 +46,34 @@ def getFollowersandFollowing(hash, e):
     response = requests.get('https://www.instagram.com/graphql/query/',
                      headers=headers, params=params)
     j = json.loads(response.text)
+    if e == 'edge_followed_by':
+        print("Getting all followers")
+    else:
+        print("Getting all following")
+    pb = progressbar.ProgressBar(max_value=j['data']['user'][e]['count'])
+    total = 0
     while j['data']['user'][e]['page_info']['has_next_page'] == True:
-        followerUsers.append(
-            [u['node']['username'] for u in j['data']['user'][e]['edges']])
-        users = [u['node']['username']
-                 for u in j['data']['user'][e]['edges']]
-        print(users)
+        l = [u['node']['username'] for u in j['data']['user'][e]['edges']]
+        followerUsers.append(l)
+        total += len(l)
+        pb.update(total)
         j = nextFew(j['data']['user'][e]['page_info']
                     ['end_cursor'], hash, headers)
         time.sleep(1)
-    followerUsers.append(
-        [u['node']['username'] for u in j['data']['user'][e]['edges']])
-    users = [u['node']['username']
-             for u in j['data']['user'][e]['edges']]
-    print(users)
+    l = [u['node']['username'] for u in j['data']['user'][e]['edges']]
+    followerUsers.append(l)
+    total += len(l)
+    pb.update(total)
     f = []
     for ul in followerUsers:
         for u in ul:
             f.append(u)
-    print(len(f))
     return f
 
 
 if __name__ == "__main__":
+    followed_count = None
+    following_count = None
     followers = getFollowersandFollowing(followerhash, "edge_followed_by")
     following = getFollowersandFollowing(followinghash, 'edge_follow')
     print(f"You have {len(followers)+1} followers")
