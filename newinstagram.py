@@ -74,7 +74,7 @@ with open(f"saves/{acc_info['graphql']['user']['username']}/{today}younotfollowi
     for u in younotfollowing:
         f.write("https://www.instagram.com/" + u + "/\n")
 
-discord_webhook = config['WEBHOOK']
+discord_webhook = os.environ['WEBHOOK']
 # post users not following me and users I don't follow back to discord
 if (len(not_following_you) > 0):
     s = ""
