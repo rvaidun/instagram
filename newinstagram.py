@@ -3,7 +3,6 @@ from dotenv import load_dotenv, dotenv_values
 import os
 from datetime import date
 import sys
-import progressbar
 import numpy as np
 import sys
 
