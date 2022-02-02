@@ -94,6 +94,7 @@ if (len(not_following_you) > 0):
 else:
     payload = {
         "username": "Instagram Bot",
+        "avatar_url": "https://123accs.com/wp-content/uploads/2021/03/instagram-automation-tools.png",
         "content": f"No one is not following you back on {today.strftime('%m/%d/%Y')}",
     }
     requests.post(discord_webhook, json=payload)
