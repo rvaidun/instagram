@@ -35,14 +35,17 @@ headers = {
 }
 
 
-acc_info = requests.get(f'https://www.instagram.com/{username}/?__a=1', headers=headers)
+acc_info = requests.get(
+    f'https://www.instagram.com/{username}/?__a=1', headers=headers)
 acc_info = acc_info.json()
 followers_count = acc_info['graphql']['user']['edge_followed_by']['count']
 following_count = acc_info['graphql']['user']['edge_follow']['count']
 
-following = requests.get(f'https://i.instagram.com/api/v1/friendships/{req_id}/following/?count=10000', headers=headers)
+following = requests.get(
+    f'https://i.instagram.com/api/v1/friendships/{req_id}/following/?count=10000', headers=headers)
 test = following.json()
-followers = requests.get(f'https://i.instagram.com/api/v1/friendships/{req_id}/followers/?count=10000', headers=headers)
+followers = requests.get(
+    f'https://i.instagram.com/api/v1/friendships/{req_id}/followers/?count=10000', headers=headers)
 
 followingjson = following.json()
 followersjson = followers.json()
