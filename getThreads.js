@@ -1,8 +1,10 @@
 import WebSocket from "ws";
 import axios from "axios";
 import mqtt from "mqtt-packet";
+import "dotenv/config";
+import fs from "fs";
 const args = process.argv.slice(2);
-const cookies = "YOUR COOKIES HERE";
+const cookies = process.env.COOKIES;
 
 async function getClientId() {
   const response = await axios.get("https://www.instagram.com/direct/", {
@@ -443,6 +445,7 @@ ws.on("message", function incoming(data) {
 
 ws.on("close", function close() {
   console.log("disconnected");
+  if (args.length === 0) return;
   fs.writeFile(args[0], JSON.stringify(conversations, null, 2), (err) => {
     if (err) {
       console.error(err);
